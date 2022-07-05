@@ -1,30 +1,23 @@
 #!/usr/bin/python3
-"""Module 11-student.
-Creates a Student class.
-"""
+'''Module for Student class.'''
 
 
 class Student:
-    """Class that defines a student.
-    Public attributes:
-        - first_name
-        - last_name
-        - age
-    Public method to_json().
-    """
-
+    '''Class for jsonification.'''
     def __init__(self, first_name, last_name, age):
-        """Initializes the Student instance."""
-
+        '''Constructor.'''
         self.first_name = first_name
         self.last_name = last_name
         self.age = age
 
-    def to_json(self):
-        """Retrieves a dictionary representation
-        of a Student instance.
+    def to_json(self, attrs=None):
+        '''Retrieves dictionary with filter.'''
+        if type(attrs) is list and all([type(x) == str for x in attrs]):
+            return {k: v for k, v in self.__dict__.items() if k in attrs}
+        else:
+            return self.__dict__.copy()
 
-        Returns: the dict representation of the instance.
-        """
-
-        return self.__dict__
+    def reload_from_json(self, json):
+        '''Loads attributes from json.'''
+        for key, value in json.items():
+            self.__dict__[key] = value
